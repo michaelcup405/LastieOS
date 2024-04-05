@@ -4,6 +4,88 @@
 <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin">
 <link rel="icon" type="image/x-icon" href="resources/lastie.png">
 <style>
+    img {
+        border: #333;
+        border-radius: 10px;
+        border-style: solid;
+        border-width: 3px;
+    }
+
+    body {
+        font-family: sans-serif;
+    }
+
+    /* Styles for the navigation bar */
+    #navbar {
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        display: flex;
+        /* Add this line to create a horizontal layout */
+        justify-content: center;
+        /* Center the navigation items horizontally */
+    }
+
+    #navbar a {
+        text-decoration: none;
+        color: white;
+        margin: 0 15px;
+    }
+
+    /* Styles for the page title */
+    #title {
+        font-family: 'Ubuntu', sans-serif;
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    /* Styles for the content */
+    #padding {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    /* Style the image */
+    #padding img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 20px auto;
+    }
+
+    /* Style the paragraph */
+    #padding h4 {
+        font-size: 16px;
+        line-height: 1.5;
+        color: #555;
+    }
+
+    /* Add hover effect to navigation links */
+    #navbar a:hover {
+        color: #ff6600;
+    }
+
+    /* Center the navigation links */
+    #navbar p {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Remove default list styling */
+    #navbar ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    /* Add spacing between navigation links */
+    #navbar h3 {
+        margin-right: 20px;
+    }
+
     /* Styles for the audio player */
     audio {
         display: block;
