@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBCode Customizer</title>
+    <style>
+        img {
+            border: #333;
+            border-radius: 10px;
+            border-style: solid;
+            border-width: 3px;
+        }
+
+        body {
+            font-family: sans-serif;
+        }
+
+        /* Styles for the navigation bar */
+        #navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            /* Add this line to create a horizontal layout */
+            justify-content: center;
+            /* Center the navigation items horizontally */
+        }
+
+        #navbar a {
+            text-decoration: none;
+            color: white;
+            margin: 0 15px;
+        }
+
+        /* Styles for the page title */
+        #title {
+            font-family: 'Ubuntu', sans-serif;
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Styles for the content */
+        #padding {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        /* Style the image */
+        #padding img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+        }
+
+        /* Style the paragraph */
+        #padding h4 {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        /* Add hover effect to navigation links */
+        #navbar a:hover {
+            color: #ff6600;
+        }
+
+        /* Center the navigation links */
+        #navbar p {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Remove default list styling */
+        #navbar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        /* Add spacing between navigation links */
+        #navbar h3 {
+            margin-right: 20px;
+        }
+
+        body {
+            font-family: sans-serif;
+        }
+
+        #navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #navbar a {
+            text-decoration: none;
+            color: white;
+            margin: 0 15px;
+        }
+
+        #title {
+            font-family: 'Ubuntu', sans-serif;
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #padding {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #padding img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border: 3px solid #333;
+            border-radius: 10px;
+        }
+
+        #padding h4 {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #000000;
+        }
+
+        #navbar a:hover {
+            color: #ff6600;
+        }
+
+        #navbar p {
+            display: flex;
+            justify-content: center;
+        }
+
+        #navbar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #navbar h3 {
+            margin-right: 20px;
+        }
+
+        h4 {
+            color: #000;
+            position: inherit;
+        }
+
+        #type {
+            border: #333;
+            border-radius: 2.5px;
+            border-style: solid;
+            border-width: 3px;
+            width: 100px;
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="navbar">
+        <p>
+            <a href="/LastieOS/">
+                <h3 id="1">Who am I?</h3>
+            </a>
+            <a href="/LastieOS/bbcode/">
+                <h3 id="2">BBCode Editor <i>(wip)</i></h3>
+            </a>
+            <a href="/LastieOS/contact/">
+                <h3 id="3">Contact me!</h3>
+            </a>
+        </p>
+    </div>
+    <div id="padding">
+        <h1 id="title">BBCode Customizer <i>(under construction)</i></h1>
+        <p><button onclick="selector = select('b');">[b]</button>
+            <button onclick="selector = select('i');">[i]</button>
+            <button onclick="selector = select('u');">[u]</button>
+            <button onclick="selector = select('s');">[s]</button>
+            <button onclick="selector = select('align');">[align]</button>
+            <button onclick="selector = select('hr');">[hr]</button>
+            <button onclick="convertToBBCode(selector);">Test</button>
+            <button onclick="reset();">Reset</button>
+            <b id="type" hidden="true"></b>
+        </p>
+
+        <input type="text" id="userInput" placeholder="Type your text or BBCode here!">
+        <input type="text" id="extra" placeholder="For [align=center] type center!">
+        <div id="bbcodeOutput"></div>
+        <h4>Preview: </h4>
+        <div id="bbcodePreview"></div>
+
+    </div>
+    <script>
+        let selector;
+        const type = document.querySelector('#type');
+        function convertToBBCode(codetype) {
+            const userInput = document.getElementById('userInput').value;
+            const extra = document.getElementById('extra').value;
+            const input = document.querySelector('#bbcodePreview');
+            let bbcode;
+            let alignDiv;
+
+            if (codetype !== 'align' && codetype !== 'hr') {
+                bbcode = '[' + codetype + ']' + userInput + '[/' + codetype + ']';
+            } else if (codetype === 'align') {
+                bbcode = '[align=' + extra + ']' + userInput + '[/align]';
+                alignDiv = document.createElement('div');
+                alignDiv.style = "text-align:" + extra + ";";
+                alignDiv.innerText = userInput;
+            } else if (codetype === 'hr') {
+                bbcode = '[hr]';
+            }
+
+            // Display the BBCode preview in the new div
+            document.getElementById('bbcodeOutput').innerText = 'BBCode: ' + bbcode;
+
+            // Convert BBCode to HTML tags
+            bbcode = bbcode.replace(/\[/g, '<').replace(/\]/g, '>');
+            document.getElementById('bbcodePreview').innerHTML = bbcode;
+
+            if (alignDiv !== null && alignDiv !== undefined) {
+                input.appendChild(alignDiv);
+            } else {
+                document.getElementById('bbcodePreview').innerHTML = bbcode;
+            }
+        }
+
+
+
+        function select(codetype) {
+            type.hidden = false;
+            type.innerText = "BBCode Selected: " + codetype.toUpperCase();
+            return codetype.toLowerCase();
+        }
+        function reset() {
+            const inputOG = document.querySelector('#bbcodePreview');
+            const sussy = document.querySelector('#bbcodeOutput');
+            inputOG.style = '';
+            inputOG.innerHTML = '';
+            inputOG.innerText = '';
+            sussy.style = '';
+            sussy.innerHtml = '';
+            sussy.innerText = '';
+            type.hidden = "true";
+            type.innerText = '';
+        }
+    </script>
+</body>
+
+</html>
