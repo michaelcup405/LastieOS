@@ -85,6 +85,31 @@
     #navbar h3 {
         margin-right: 20px;
     }
+
+    /* Styles for the audio player */
+    audio {
+        display: block;
+        margin: 20px auto;
+        max-width: 100%;
+        height: auto;
+        border: 3px solid #333;
+        border-radius: 10px;
+    }
+
+    /* Style the audio controls */
+    audio::-webkit-media-controls-panel {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-family: sans-serif;
+        color: #555;
+    }
+
+    /* Add hover effect to audio controls */
+    audio::-webkit-media-controls-play-button:hover,
+    audio::-webkit-media-controls-pause-button:hover {
+        color: #ff6600;
+    }
 </style>
 
 <body>
@@ -110,28 +135,29 @@
             posted in chat to a playlist! I even coded this website!</h3>
         <h4><i>I used to make minecraft mods, I uploaded them on curseforge under the username "MichaelCup405". I made
                 mods like the Simple One Punch Man mod, and Katanas!</i>
-                <audio controls>
-                    <source src="resources/music/5K Special - Gaslighting (isn't real)!!!.mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-                <audio controls>
-                    <source src="resources/music/Rock Thingy - Drums by SlimeJime - Suggestions Wanted.mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-                <audio controls>
-                    <source src="resources/music/The Answer.wav" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-                <audio controls>
-                    <source src="resources/music/The Enigma - Lastie Original (May be in a game idk).mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-                <audio controls>
-                    <source src="resources/music/Winter Wasteland.wav" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-                
-            </div>
+            <audio controls>
+                <source src="resources/music/5K Special - Gaslighting (isn't real)!!!.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <audio controls>
+                <source src="resources/music/Rock Thingy - Drums by SlimeJime - Suggestions Wanted.mp3"
+                    type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <audio controls>
+                <source src="resources/music/The Answer.wav" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <audio controls>
+                <source src="resources/music/The Enigma - Lastie Original (May be in a game idk).mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <audio controls>
+                <source src="resources/music/Winter Wasteland.wav" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+
+    </div>
 
 </body>
 
