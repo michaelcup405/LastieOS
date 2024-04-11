@@ -1,0 +1,648 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+  <link rel="stylesheet" href="style.css">
+  <link rel='preload' as='script' href='/hb/uid.js?cb=195-0-1'>
+  <base href="https://onlinesequencer.net" />
+  <title>Online Sequencer</title>
+  <meta property="og:image" content="resources/icon.png" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="description"
+    content="OnlineSequencer.net is an online music sequencer. Make tunes in your browser and share them with friends!" />
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Online Sequencer" />
+  <meta property="og:description"
+    content="OnlineSequencer.net is an online music sequencer. Make tunes in your browser and share them with friends!" />
+  <meta property="fb:app_id" content="1512952002290893" />
+  <style id="css_vars">
+    .key,
+    .key_sharp,
+    .key div,
+    .key_sharp div {}
+
+    .measure {}
+  </style>
+  <link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet" type="text/css" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-3037948-7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-3037948-7');
+  </script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link href="https://onlinesequencer.net/resources/fontawesome.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css" />
+  <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
+  <script type="text/javascript"src="resources/c/4ca4467f08ba79b6609a2cd4f8b92a54.js"></script>
+  <script src="https://the.gatekeeperconsent.com/ccpa/v2/ccpaplus.js?cb=1" async></script>
+  <link rel='canonical' href='' />
+</head>
+<body>
+<div id="container">
+  
+  <div id="header" hidden>
+    <div id="nav">
+      <a id="logo" href="/">
+        <div class="icon"></div>
+        <div class="text">
+          <span class="title">Online Sequencer</span>
+          <span class="subtitle">Make music online</span>
+        </div>
+      </a>
+      <div id="header_right">
+        <div id="bar">
+          <div style="float:right; position: relative;">
+            <div id="user_loading">
+            </div>
+            <div id="user_guest" style="display: none">
+              <div id="login_fields">
+                <input type="text" id="username" name="username" placeholder="Username" />
+                <input type="password" id="password" name="password" placeholder="Password" />
+              </div>
+              <a id="login_button" class="linkbutton" href="javascript:;">Login</a>
+              <form action="/forum/member.php" target="_blank" style="display: inline" method="post">
+                <input type="hidden" name="step" value="agreement" />
+                <input type="hidden" name="action" value="register" />
+                <input id="registerbutton" type="submit" class="button" name="agree" value="Register" />
+              </form>
+
+            </div>
+            <div id="user_member" style="display: block">
+              Welcome back <span id="member_username"><a href="/members/95289">Lastie</a></span>!
+              <a id="member_logout" class="linkbutton" href="javascript:;">Log out</a>
+            </div>
+          </div>
+          <span id="sequence_info"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="main">
+    <div id="page" style="">
+      
+
+
+      <div id="page_content">
+        
+        <div id="page_right" style="max-width:none;">
+          <style type="text/css">
+            #main {
+              bottom: 0;
+            }
+          </style>
+          <div id="frame_wrapper">
+            <script type="text/javascript">
+              settings.user = { "shortcuts": "", "disable_webgl": "false", "remember_length": "true", "remember_volume": "true", "custom_cursor": "false" };
+              window.audioFormat = 'ogg';
+              window.isMobile = false;
+              loading = true;
+              sequenceDuration = -1;
+              onPageLoad = function () {
+                create();
+                $('#loading_overlay').css('display', 'none');
+                var data = '';
+                instMgr.ensureLoaded(instrument); enterEditMode(); loadDataProto(data);
+                song.id = 0;
+                song.basedon = 0;
+                createSynth(55);  // Create initial synthesizer
+                owner = 1;
+                var db = openBackupDatabase();
+                db.backup.toArray().then((result) => {
+                  if (result.length == 1) {
+                    hasBackup = true;
+                    document.getElementById('sharelink').innerHTML = 'Found unsaved sequence, restore it? <a class="toolbar_button" href="javascript:;" onclick="loadBackup()">Restore</a> <a class="toolbar_button" href="javascript:;" onclick="clearBackup()">Clear</a>';
+                    document.getElementById('share').style.display = 'block';
+                  }
+                  db.close();
+                });
+                container.scrollTop = container.scrollHeight / 2 - 200;
+                dragScroll(document.querySelector('.info-sidebar-featured-list'));
+              };
+            </script>
+            <div id="sequencer_main_row">
+              <div id="sequencer">
+                <div id="menus">
+                  <div class="item">
+                    <div class="box_label"><span>Grid</span>
+                      <div class="box_input" id="grid_select_input">
+                        <select id="grid_select">
+                          <option value="0.25">1</option>
+                          <option value="0.5">1/2</option>
+                          <option value="0.75">1/3</option>
+                          <option value="1" selected="selected">1/4</option>
+                          <option value="1.5">1/6</option>
+                          <option value="2">1/8</option>
+                          <option value="3">1/12</option>
+                          <option value="4">1/16</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="box_label"><span>Time signature</span>
+                      <div class="box_input" id="time_sig_select_input">
+                        <select id="time_sig_select">
+                          <option value="2">2/4</option>
+                          <option value="3">3/4</option>
+                          <option value="4" selected="selected">4/4</option>
+                          <option value="5">5/4</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="box_label"><span>Key (<a href="javascript:;" onclick="updateScale(song.notes);">Auto
+                          Detect</a>)</span>
+                      <div class="box_input">
+                        <select id="key_select"></select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="box_label"><span>Auto Scroll</span>
+                      <div class="box_input" id="scroll_select_input">
+                        <select id="scroll_select">
+                          <option value="3">Follow</option>
+                          <option value="0">Smooth</option>
+                          <option value="1" selected="selected">Fast</option>
+                          <option value="2">Off</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div id="audio_track_link"
+                      title="You can play an audio file along with your sequence. It won't be saved, but can help you transcribe a song.">
+                      <a class="linkbutton" style="float: left" href="javascript:;" onclick="showAudioTrackSelect()">Add
+                        Audio Track</a>
+                    </div>
+                    <div id="audio_track_loading" style="display:none">Loading audio file...</div>
+                    <div id="audio_track" style="display:none">
+                      <input id="audio_track_file" type="file" accept="audio/*" class="button" />
+                      <div id="audio_track_remove">
+                        <a class="linkbutton" href="javascript:;"
+                          onclick="$('#wavesurfer_element').toggle();">Show/hide waveform</a><a
+                          class="linkbutton" href="javascript:;" onclick="removeAudioTrack()">Remove</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="bottom_left">
+                    <div id="record_button" class="bottom_left_button"></div>
+                    <div id="quantize_button" class="bottom_left_button"></div>
+                    <div id="key_filter_button" class="bottom_left_button"></div>
+                    <div id="metronome_button" class="bottom_left_button"></div>
+                  </div>
+                </div>
+                <hr style="width: 100vw; border-color: #2B2C2F; height: -1px; border-width: 1px;"></hr>
+                <div id="top-bar-container">
+                  <div id="titlebar">
+                    <div class="left">
+                      <div id="view_mode_play" class="play" title="Play">
+                        <i id="view_mode_play_icon" class="fas fa-play"></i>
+                      </div>
+                      <div class="text">
+                        Untitled </div>
+                      <div class="btn_edit preview_mode_btn" title="Enter edit mode"><i class="far fa-edit"></i></div>
+                      <div class="btn_graphics preview_mode_btn" title="Toggle fast graphics"><i
+                          class="far fa-tachometer-fast"></i></div>
+                      <div class="spacer"></div>
+                      <div class="btn_zoomout preview_mode_btn" title="Zoom out"><i class="far fa-search-minus"></i>
+                      </div>
+                      <div class="btn_zoomin preview_mode_btn" title="Zoom in"><i class="far fa-search-plus"></i>
+                      </div>
+                    </div>
+                  </div>
+                <div id="playbutton"></div>
+                <div id="share" style="display: none"><i class="fas fa-times" id="btn_close"></i><span
+                    id="sharelink">Link to this sequence: </span></div>
+                <div id="instrument_options" style="display: none">
+                  <div id="instrument_options_tabs">
+                    <div id="instrument_options_tab_simple" class="selected">Simple</div>
+                    <div id="instrument_options_tab_advanced">Advanced</div>
+                    <div id="instrument_options_tab_synth">Synthesizer</div>
+                  </div>
+                  <div id="instrument_options_simple"></div>
+                  <div id="instrument_options_advanced" style="display: none">
+                    <div class="instrument_options_advanced_row">
+                      <div id="instrument_options_advanced_chip" title="Click to change color">
+                        <input id="instrument_options_advanced_color" type="text" data-coloris="" />
+                      </div>
+                      <div id="instrument_options_advanced_title" title="Click to change name">Instrument name</div>
+                      <input type="text" id="instrument_options_advanced_title_edit" class="hidden" />
+                      <div id="instrument_options_advanced_lock" class="instrument_lock btn"
+                        onclick="lockInstrumentButton(instrument, event)"><i id="instrument_options_advanced_lock_btn"
+                          class="fas fa-lock-open-alt"></i></div>
+                      <div class="instrument_options_advanced_spacer"></div>
+                      <div id="instrument_options_copy" class="button" onclick="copyInstrumentSettings(instrument)">
+                        Copy</div>
+                      <div id="instrument_options_load" class="button" onclick="pasteInstrumentSettings(instrument)">
+                        Load</div>
+                      <div id="instrument_options_clone" class="button" onclick="cloneInstrument(instrument)">Clone
+                      </div>
+                      <div id="instrument_options_delete" class="button" onclick="deleteClonedInstrument(instrument)">
+                        Delete</div>
+                    </div>
+                    <div class="instrument_options_advanced_row">
+                      <div id="instrument_options_mute" class="button" onclick="muteInstrument(instrument)">Mute <i
+                          class="fa-solid fa-volume-xmark"></i></div>
+                      <div id="instrument_options_solo" class="button" onclick="soloInstrument(instrument)">Solo <i
+                          class="fa-solid fa-microphone-stand"></i></div>
+                      <div style="display:flex; justify-content:flex-end; flex:1;">
+                        <div id="instrument_options_reset" class="button" onclick="resetSettings(instrument)">Reset <i
+                            class="fa-solid fa-rotate-reverse"></i></div>
+                      </div>
+                    </div>
+                    <div class="instrument_options_advanced_row">
+                      <div class="instrument_options_advanced_label">Volume</div>
+                      <div class="slider_line">
+                        <div class="slider_center"></div>
+                        <input id="instrument_options_advanced_volume" class="slider" type="range" min="0" max="2"
+                          step="0.01" oninput="setInitialInstrumentVolume(instrument, this.value)" />
+                      </div>
+                      <div id="instrument_options_advanced_delay" class="button" onclick="selectDelay(instrument)">
+                        Delay</div>
+                    </div>
+                    <div class="instrument_options_advanced_row">
+                      <div class="instrument_options_advanced_label">Panning</div>
+                      <div class="slider_line">
+                        <div class="slider_center"></div>
+                        <input id="instrument_options_advanced_pan" class="slider" type="range" min="-1" max="1"
+                          step="0.01" oninput="setPan(instrument, this.value)" />
+                      </div>
+                    </div>
+                    <div class="instrument_options_advanced_row">
+                      <div class="instrument_options_advanced_label">Detune</div>
+                      <div class="slider_line">
+                        <div class="slider_center"></div>
+                        <input id="instrument_options_advanced_detune" class="slider detune_slider" type="range"
+                          min="-1200" max="1200" step="100" oninput="setDetune(instrument, this.value)" />
+                      </div>
+                    </div>
+                    <div class="instrument_options_advanced_row slider_margin">
+                      <div id="instrument_options_advanced_reverb" class="button" onclick="selectReverb(instrument)">
+                        Reverb</div>
+                      <select id="instrument_options_advanced_reverb_select"></select>
+                      <div id="instrument_options_advanced_reverb_volume_wrap" class="slider_line">
+                        <input id="instrument_options_advanced_reverb_volume" class="slider" type="range" min="0"
+                          max="1" step="0.01" value="1" oninput="setReverbVolume(instrument, this.value)" />
+                      </div>
+                    </div>
+                    <div class="instrument_options_advanced_row slider_margin">
+                      <div id="instrument_options_advanced_distort" class="button" onclick="selectDistort(instrument)">
+                        Distort</div>
+                      <select id="instrument_options_advanced_distort_select"></select>
+                      <div id="instrument_options_advanced_distort_volume_wrap" class="slider_line">
+                        <input id="instrument_options_advanced_distort_volume" class="slider" type="range" min="0"
+                          max="1" step="0.01" value="0" oninput="setDistortVolume(instrument, this.value)" />
+                      </div>
+                    </div>
+                    <div id="instrument_options_advanced_eq">
+                      <div class="button" onclick="selectEq(instrument)">Equalizer</div>
+                      <div id="instrument_options_advanced_eq_sliders">
+                        <div class="instrument_options_advanced_eq_row">
+                          <div class="instrument_options_advanced_label">High</div>
+                          <div class="slider_line with_warning">
+                            <div class="slider_center"></div>
+                            <input id="instrument_options_advanced_eq_high" class="slider" type="range" min="-48"
+                              max="48" step="1" oninput="setEqHigh(instrument, parseFloat(this.value))" />
+                          </div>
+                        </div>
+                        <div class="instrument_options_advanced_eq_row">
+                          <div class="instrument_options_advanced_label">Mid</div>
+                          <div class="slider_line with_warning">
+                            <div class="slider_center"></div>
+                            <input id="instrument_options_advanced_eq_mid" class="slider" type="range" min="-48"
+                              max="48" step="1" oninput="setEqMid(instrument, parseFloat(this.value))" />
+                          </div>
+                        </div>
+                        <div class="instrument_options_advanced_eq_row">
+                          <div class="instrument_options_advanced_label">Low</div>
+                          <div class="slider_line with_warning">
+                            <div class="slider_center"></div>
+                            <input id="instrument_options_advanced_eq_low" class="slider" type="range" min="-48"
+                              max="48" step="1" oninput="setEqLow(instrument, parseFloat(this.value))" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="instrument_options_synth" style="display: none">
+                    <div class="instrument_options_synth_row">
+                      <div id="instrument_options_synth_chip" class="instrument55"></div>
+                      <div id="instrument_options_synth_title">Synth name</div>
+                      <div class="instrument_options_synth_spacer"></div>
+                    </div>
+                    <div class="instrument_options_synth_row">
+                      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"
+                        id="instrument_options_synth_wave">
+                        <g>
+                          <rect x="0" y="0" width="64" height="64" fill="#333" stroke-width=".264583"></rect>
+                        </g>
+                        <path d="m 0 0v 64m-28-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m
+           4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m
+            4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m-64-64h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h
+             64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64" fill="none"
+                          stroke="#4e4646" stroke-width=".2"></path>
+                        <!-- Sine by default -->
+                        <path d="m0 32c16-32 32 0 32 0s16 32 32 0" fill="none" stroke="#fbab30" stroke-linecap="round"
+                          stroke-width=".765" id="instrument_options_synth_wavepath"></path>
+                      </svg>
+                      <select id="instrument_options_synth_type">
+                        <option value="sine">Sine</option>
+                        <option value="square">Square</option>
+                        <option value="sawtooth">Sawtooth</option>
+                        <option value="triangle">Triangle</option>
+                      </select>
+                    </div>
+                    <div class="instrument_options_synth_row">
+                      <select id="instrument_options_synth_filter_type">
+                        <option value="0">Low pass</option>
+                        <option value="1">Band pass</option>
+                        <option value="2">High pass</option>
+                      </select>
+                      <div class="slider_line">
+                        <input id="instrument_options_synth_filter" class="slider" type="range" min="0" max="20000"
+                          step="1" oninput="setSynthFilter(instrument, parseFloat(this.value))" />
+                      </div>
+                    </div>
+                    <div class="instrument_options_synth_row">
+                      <div class="instrument_options_synth_label instrument_options_synth_label_q">Resonance (Q)</div>
+                      <div class="slider_line">
+                        <input id="instrument_options_synth_filter_q" class="slider" type="range" min="0" max="20"
+                          step="1" oninput="setSynthFilterQ(instrument, parseFloat(this.value))" />
+                      </div>
+                    </div>
+                    <div class="instrument_options_synth_row">
+                      <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"
+                        id="instrument_options_synth_lfo_graph">
+                        <g>
+                          <rect x="0" y="0" width="64" height="64" fill="#333" stroke-width=".264583"></rect>
+                        </g>
+                        <path d="m 0 0v 64m-28-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m
+           4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m
+            4-64v 64m 4-64v 64m 4-64v 64m 4-64v 64m-64-64h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h
+             64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64m-64 4h 64" fill="none"
+                          stroke="#4e4646" stroke-width=".2"></path>
+                        <g id="synth_lfo_graph_lines"></g>
+                        <path d="" fill="none" stroke="#15aedc" stroke-linecap="round" stroke-width=".765"
+                          id="instrument_options_synth_lfopath"></path>
+                      </svg>
+                      <div class="instrument_options_synth_lfo_osc">
+                        <button id="lfo_osc_sine" class="lfo_osc_option lfo_osc_selected"
+                          onclick="setLFOOsc(instrument, 'sine')">Sn</button>
+                        <button id="lfo_osc_square" class="lfo_osc_option"
+                          onclick="setLFOOsc(instrument, 'square')">Sq</button>
+                        <button id="lfo_osc_sawtooth" class="lfo_osc_option"
+                          onclick="setLFOOsc(instrument, 'sawtooth')">St</button>
+                        <button id="lfo_osc_triangle" class="lfo_osc_option"
+                          onclick="setLFOOsc(instrument, 'triangle')">T</button>
+                      </div>
+                      <div class="instrument_options_synth_lfo">
+                        <div class="instrument_options_synth_label instrument_options_synth_label_lfo">LFO</div>
+                        <select id="instrument_options_lfo_target">
+                          <option value="0">Volume</option>
+                          <option value="1">Pitch</option>
+                          <option value="2">Filter</option>
+                        </select>
+                        <div id="instrument_options_synth_lfo_e" class="button" onclick="selectLFO(instrument)">1/4
+                        </div>
+                        <select id="instrument_options_synth_lfo_select">
+                          <option value="CUSTOM">Custom...</option>
+                          <option value="1/1">1</option>
+                          <option value="1/2">1/2</option>
+                          <option value="1/3">1/3</option>
+                          <option value="1/4" selected="">1/4</option>
+                          <option value="1/6">1/6</option>
+                          <option value="1/8">1/8</option>
+                          <option value="1/12">1/12</option>
+                          <option value="1/16">1/16</option>
+                          <option value="1/32">1/32</option>
+                        </select>
+                        <div class="slider_line">
+                          <input id="instrument_options_synth_lfo_intensity" class="slider" type="range" min="0"
+                            max="100" step="1" oninput="setLFOIntensity(instrument, parseFloat(this.value))" />
+                        </div>
+                        <div class="synth_lfo_hz">
+                          <input id="instrument_options_synth_lfo_hz"
+                            onchange="setLFORate(instrument, this.value, true)" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="instrument_options_synth_row">
+                      <div id="instrument_options_synth_adsr_e" class="button" onclick="selectADSR(instrument)">
+                        Envelope</div>
+                      <svg width="160" height="72" viewBox="0 0 160 72" xmlns="http://www.w3.org/2000/svg"
+                        id="instrument_options_synth_adsr_graph">
+                        <g>
+                          <rect x="0" y="0" width="160" height="72" fill="#333" stroke-width=".264583"></rect>
+                        </g>
+                        <g id="synth_adsr_graph_lines"></g>
+                        <g id="synth_adsr_graph_points"></g>
+                        <path d="" fill="#a6d94822" stroke="#a6d948" stroke-linecap="round" stroke-width=".765"
+                          id="instrument_options_synth_adsrpath"></path>
+                      </svg>
+                      <div id="instrument_options_synth_adsr" class="adsr_disabled">
+                        <div class="slider_line_v">
+                          <p>A </p><input id="instrument_options_synth_attack" class="slider_v" type="range" value="0"
+                            min="0" max="1" step="0.02" oninput="setAttack(instrument, parseFloat(this.value))" />
+                        </div>
+                        <div class="slider_line_v">
+                          <p>D </p><input id="instrument_options_synth_decay" class="slider_v" type="range" value="0"
+                            min="0" max="1" step="0.02" oninput="setDecay(instrument, parseFloat(this.value))" />
+                        </div>
+                        <div class="slider_line_v">
+                          <p>S </p><input id="instrument_options_synth_sustain" class="slider_v" type="range" value="0"
+                            min="0" max="1" step="0.02" oninput="setSustain(instrument, parseFloat(this.value))" />
+                        </div>
+                        <div class="slider_line_v">
+                          <p>R </p><input id="instrument_options_synth_release" class="slider_v" type="range" value="0"
+                            min="0" max="1" step="0.02" oninput="setRelease(instrument, parseFloat(this.value))" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="popup" id="marker_editor" style="display: none">
+                  <div class="popup-header">
+                    <span>Edit Markers</span>
+                    <div class="btn" title="Close" onclick="markerEditorClose()"><i class="far fa-times"></i></div>
+                  </div>
+                  <div id="marker_editor_marker_list">
+                    <div id="marker_editor_markers"></div>
+                    <div id="marker_editor_add">
+                      <div class="btn" id="btn_edit_markers_add" title="Add" onclick="markerEditorAdd()"><i
+                          class="far fa-plus"></i></div>
+                      <div class="box_input" id="marker_type_input"><select id="marker_type"></select></div>
+                      <div class="box_input" id="marker_instrument_input" style="visibility: hidden;">
+                        <div id="marker_instrument_wrapper"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="popup" id="user_settings" style="display: none">
+                  <div class="popup-header">
+                    <span>Settings</span>
+                    <div class="btn" title="Close" onclick="$('#user_settings').hide()"><i
+                        class="far fa-times"></i></div>
+                  </div>
+                  <div class="user_settings_content">
+                    <div class="user_settings_row"><input id="user_setting_5" type="checkbox"
+                        onclick="updateUserSetting('5', 'disable_webgl', $('#user_setting_5').is(':checked') ? 'true' : 'false')" /><label
+                        id="user_setting_5" for="user_setting_5">Disable WebGL (requires refresh)</label></div>
+                    <div class="user_settings_row"><input id="user_setting_1" type="checkbox" checked=""
+                        onclick="updateUserSetting('1', 'remember_length', $('#user_setting_1').is(':checked') ? 'true' : 'false')" /><label
+                        id="user_setting_1" for="user_setting_1">Remember last note length</label></div>
+                    <div class="user_settings_row"><input id="user_setting_2" type="checkbox" checked=""
+                        onclick="updateUserSetting('2', 'remember_volume', $('#user_setting_2').is(':checked') ? 'true' : 'false')" /><label
+                        id="user_setting_2" for="user_setting_2">Remember last note volume</label></div>
+                    <div class="user_settings_row"><input id="user_setting_3" type="checkbox"
+                        onclick="updateUserSetting('3', 'custom_cursor', $('#user_setting_3').is(':checked') ? 'true' : 'false')" /><label
+                        id="user_setting_3" for="user_setting_3">Show custom cursors</label></div>
+                  </div>
+                </div>
+                  <div id="toolbar_container" class="dragscroll">
+                    <div class="dragscroll-wrapper">
+                      <div id="toolbar_element" class="dragscroll-content" style="display: flex">
+                        <div>
+                          <div id="play_small" class="play" title="Play">
+                            <i id="play_small_icon" class="fas fa-play"></i>
+                          </div>
+                          <div class="box_label">
+                            <span>BPM</span>
+                            <div class="box_input">
+                              <input type="text" id="bpm" size="3" maxlength="3" autocomplete="off" data-lpignore="true"
+                                value="110" onchange="setInitialBPM(document.getElementById('bpm').value);" />
+                            </div>
+                          </div>
+                          <div class="box_label">
+                            <span>Title</span>
+                            <div class="box_input" id="title_box_input">
+                              <input type="text" id="title" size="32" maxlength="128" autocomplete="off"
+                                data-lpignore="true" value="Untitled" />
+                            </div>
+                          </div>
+                          <div class="btn" id="mode_draw" title="Draw"><i class="far fa-edit"></i></div>
+                          <div class="btn" id="mode_edit" title="Select"><i class="fas fa-mouse-pointer"></i></div>
+                          <div class="btn" id="mode_erase" title="Erase"><i class="fas fa-eraser"></i></div>
+                          <div class="spacer"></div>
+                          <div id="instrument_select_box" class="box_label" style="position:relative">
+                            <span>Instrument</span>
+                            <div class="box_input">
+                              <div id="instrument_select_wrapper"></div>
+                            </div>
+                          </div>
+                          <div class="btn" id="btn_select_this">
+                            <i class="fas fa-music" title="Highlight this one (right click for options)"></i>
+                          </div>
+                          <div class="btn" id="btn_instrument_options" title="Show options">
+                            <i class="far fa-sliders-h"></i>
+                          </div>
+                          <div class="spacer"></div>
+                          <div class="btn" id="btn_cut" title="Cut"><i class="far fa-cut"></i></div>
+                          <div class="btn" id="btn_copy" data-clipboard-text="" title="Copy"><i class="fas fa-copy"></i>
+                          </div>
+                          <div class="btn" id="btn_paste" title="Paste"><i class="fas fa-paste"></i></div>
+                          <div class="btn" id="btn_selectall" title="Select all"><i></i></div>
+                          <div class="spacer"></div>
+                          <div class="btn btn_zoomout" title="Zoom out"><i class="far fa-search-minus"></i></div>
+                          <div class="btn btn_zoomin" title="Zoom in"><i class="far fa-search-plus"></i></div>
+                          <div class="spacer"></div>
+                          <div class="btn" id="savelink" href="javascript:;" title="Save"><i
+                              class="fas fa-cloud-upload"></i></div>
+                          <div class="btn" id="btn_save_options"><i class="fas fa-caret-down" title="Show options"></i>
+                          </div>
+                          <div class="spacer"></div>
+                          <div class="btn" id="btn_help" title="Show help"><i class="fas fa-question-circle"></i>
+                          </div>
+                          <div class="btn" id="btn_full_screen"><i class="fas fa-expand-wide" title="Full screen"></i>
+                          </div>
+                          <div class="btn" id="btn_more"><i class="far fa-ellipsis-v" title="More tools"></i></div>
+                        </div>
+                      </div>
+                      <div class="dragscroll-left"></div>
+                      <div class="dragscroll-right">
+                      </div>
+                    </div>
+                  </div>
+                  <div id="top-bar-right">
+                    <div id="volume"><i class="fas fa-volume"></i><input id="volume_slider" type="range" min="0" max="2"
+                        step="0.01" value="1" /></div>
+                  </div>
+                </div>
+                <div id="message_wrapper">
+                  <span id="message_text"></span>
+                </div>
+                <input type="file" id="file_upload_input" style="display: none" onchange="loadFileFromInputDialog()" />
+                <div id="sequencer_timeline_wrapper">
+                  <div id="sequencer_timeline_options">
+                    <div class="left">
+                      <div id="btn_user_settings" title="Sequencer settings" onclick="openUserSettings()"><i
+                          class="fas fa-cog"></i></div>
+                    </div>
+                    <div id="timeline_option_measures" class="timeline_option_active" title="Show measure number"><i
+                        class="fas fa-ruler"></i></div>
+                    <div id="timeline_option_time" class="timeline_option" title="Show time"><i
+                        class="fas fa-clock"></i></div>
+                  </div>
+                  <div id="sequencer_timeline">
+                    <div id="sequencer_timeline_measures" oncontextmenu="return false;"></div>
+                    <div id="sequencer_timeline_markers" oncontextmenu="return false;"></div>
+                  </div>
+                </div>
+                <div id="sequencer_panel">
+                  <div id="keyboard_wrapper_element">
+                    <div id="keyboard_element"></div>
+                  </div>
+                  <div id="sequencer_panel_right">
+                    <div id="sequencer_view">
+                    </div>
+                    <div id="playhead_wrapper">
+                    </div>
+                    <div id="sequencer_main" tabindex="0">
+                      <div id="sequencer_inner">
+                        <div id="selection_rect"></div>
+                        <div id="wavesurfer_element" style="display:none"></div>
+                        <div id="marker_bar" style="display:none" onmousedown="mouseDownMarkerBar(event)"
+                          oncontextmenu="return false;"></div>
+                        <div id="marker_selection_rect" style="display:none"></div>
+                      </div>
+                    </div>
+                    <div id="progress_bar_area"></div>
+                  </div>
+                </div>
+              </div>
+              <div id="sequencer_sidebar">
+                <div id="sequencer_sidebar_resize"></div>
+                <div id="sequencer_sidebar_title" class="title">
+                  <div id="sidebar_tab_list"></div><a href="javascript:sidebar.close()"><i class="far fa-times"></i></a>
+                </div>
+                <div id="sidebar_content"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript">
+          if (typeof onPageLoad === 'function') {
+            onPageLoad();
+          }
+        </script>
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="chatplaceholder">
+</div>
+<br /><br />
+</body>
+
+</html>
